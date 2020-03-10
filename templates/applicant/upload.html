@@ -1,0 +1,11 @@
+{%extends "applicant/applicant.html"%}
+{%block content%}
+      <form action="/handleUpload" method="post" enctype="multipart/form-data">
+            Choose the file: <input type="file" name="resume"/><BR>
+                <input type="submit" value="Upload"/>
+        </form>
+
+
+<script src="{{ url_for('static', filename='upload.js') }}" ></script>
+{% endblock content%}
+
