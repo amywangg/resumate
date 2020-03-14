@@ -1,0 +1,84 @@
+Backend 
+Frontend 
+Cognitive Cloud Computing 
+DevOps 
+Robotic Process Automation
+Cybersecurity 
+Java 
+C++
+Objective-C
+C# 
+Ruby 
+VBA 
+Excel 
+Code
+Developer
+Quantum Computing 
+Immersive Experience 
+HTML 5
+Structural Elements 
+Semantic Elements 
+Meta Elements 
+Search Engine Marketing 
+Search Engine Optimization
+User Flow 
+Sitemaps 
+Bugs 
+Text Editor 
+Version Control 
+Web Servers
+Caching 
+Firewalls 
+Virtual Private Network 
+Data Architecture 
+Data Visualization 
+Data Modelling 
+Hybrid App 
+Native App
+Integrated Development Environment 
+Software Development Kit 
+Responsive Web Design  
+CSS
+Data Structures 
+Debug 
+Frameworks 
+Full-stack 
+GitHub 
+HTML
+Information Architecture 
+JavaScript 
+jQuery 
+SQL 
+Python 
+PHP
+Operating System 
+UI Design 
+UX Design 
+Wireframe 
+Agile 
+Code Development 
+Software 
+Software Engineering 
+Network 
+Relational Database 
+User Interface 
+Information Technology 
+Management Information Systems 
+Artificial Intelligence 
+Data Mining 
+Big Data 
+Machine Learning 
+Augmented Reality 
+Robotics 
+Smart Industry 
+Blockchain 
+Internet of Things 
+Chatbots 
+Voice Recognition 
+Build 
+Testing 
+Troubleshooting 
+Diagnosed
+Automate
+Deploy 
+Net Neutrality 

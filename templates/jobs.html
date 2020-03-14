@@ -21,7 +21,7 @@
         </svg>
         <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
             <strong class="d-block text-gray-dark">{{job.Job_Title}}</strong>
-            {{job.Job_Description[0:50]}}
+            {{job.Job_Description[0:300]}}
         </p>
         <a href="/job/update/{{job.ID}}" class="btn btn-warning btn-xs" data-toggle="modal"
            data-target="#modaledit{{job.ID}}">Edit</a>

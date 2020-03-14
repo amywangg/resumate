@@ -1,13 +1,25 @@
-import authenticateDrive
+import spacy, pytextrank, re
 
+def text_rank(job):
+    # load a spaCy model, depending on language, scale, etc.
+    nlp = spacy.load("en_core_web_sm")
 
-def createJob():
+    # add PyTextRank to the spaCy pipeline
+    tr = pytextrank.TextRank()
+    nlp.add_pipe(tr.PipelineComponent, name="textrank", last=True)
 
-    service = authenticateDrive.authenticateDrive()
+    doc = nlp(job)
 
-    file_metadata = {
-        'name': 'Invoices',
-        'mimeType': 'application/vnd.google-apps.folder'
-    }
-    file = service.files().create(body=file_metadata, fields='id').execute()
-    print('Folder ID: %s' & file.get('id'))
+    # examine the top-ranked phrases in the document
+    keywords = list(map(str, doc._.phrases))
+
+    buzzwords = [line.rstrip('\n').lower() for line in open("static/BuzzWords.txt")]
+    buzzwords = [x.strip(' ') for x in buzzwords]
+
+    matches = []
+
+    for word in buzzwords:
+        if any(word in s for s in keywords):
+            matches.append(word)
+
+    return matches

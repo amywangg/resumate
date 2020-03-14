@@ -1,10 +1,11 @@
-import tempfile
-import uploadToDrive, readFromDrive
-from flask import Flask, request, render_template, url_for, redirect
-from werkzeug.utils import secure_filename
+from driveAPI import readFromDrive, uploadToDrive
+import parseSkills
+from flask import Flask, request, render_template, url_for, redirect, jsonify, json
 from flask_mysqldb import MySQL
+from applicantroutes import applicant
 
 app = Flask(__name__)
+app.register_blueprint(applicant)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -41,16 +42,24 @@ def jobs_page():
 
 # CREATE JOB
 # GET: get skills matrix if use existing, POST: post new job and skills
-@app.route('/job/create', methods=['GET','POST'])
+@app.route('/job/create', methods=['GET', 'POST'])
 def create_job():
+    # TODO: if using existing add skill id from existing to db
     if request.method == 'POST':
         job_title = request.form['title']
         job_description = request.form['description']
         job_status = "open"
+
+        skill_name = request.form['skillname']
+        print(request.form['skilltag'])
+        print(type(request.form['skilltag']))
+        skills = request.form['skilltag']
+ 
         # connect to sql execute queries
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Job (Job_Title, Job_Description, Job_Status) VALUES (%s,%s,%s)",
-                    (job_title, job_description, job_status))
+        cur.execute("INSERT INTO Skills (Title, Skills) VALUES (%s,%s)", (skill_name, skills))
+        cur.execute("INSERT INTO Job (Job_Title, Job_Description, Job_Status, Skills_ID) VALUES (%s,%s,%s,%s)",
+                    (job_title, job_description, job_status, cur.lastrowid))
         mysql.connection.commit()
 
         return redirect(url_for('jobs_page'))
@@ -77,14 +86,29 @@ def update_job(job_id):
         job_description = request.form['description']
         cur.execute("UPDATE Job SET Job.Job_Title = (%s), Job.Job_Description=(%s)"
                     "WHERE job.ID = (%s)",
-                    (job_title,job_description,job_id))
+                    (job_title, job_description, job_id))
         mysql.connection.commit()
         return redirect(url_for('jobs_page'))
 
 
+# GET SKILLS FROM JOB DESC
+@app.route('/getskills')
+def get_skills():
+    a = request.args.get('a', 0, type=str)
+    return jsonify(parseSkills.text_rank(a))
+
+
+# TODO: IMPLEMENT OPTION TO USE EXISTING SKILLS MATRIX
+# GET EXISTING SKILLS FROM DB
+@app.route('/getexistingskills')
+def get_existing_skills():
+    a = request.args.get('a', 0, type=str)
+    return jsonify(parseSkills.text_rank(a))
+
+
 # CREATE SKILLS
-@app.route('/job/create/<string:job_id>', methods=['POST', 'GET'])
-def link_skills(job_id):
+@app.route('/job/create/<string:skills_id>', methods=['POST', 'GET'])
+def link_skills(skills_id):
     use_existing = False
 
     if request.method == 'POST':
@@ -104,52 +128,4 @@ def link_skills(job_id):
 
         mysql.connection.autocommit()
 
-
-################################# APPLICANT ROUTES #######################################
-
-@app.route('/applicant')
-def applicant_page():
-    return render_template('applicant/jobs-apply.html', title="Applicant")
-
-
-@app.route('/apply')
-def apply_page():
-    return render_template('applicant/upload.html', title="Apply")
-
-
-@app.route('/summary')
-def summary_page():
-    readFromDrive.readFromDrive()
-    return render_template('applicant/applicant.html', title="Applicant")
-
-
-@app.route("/handleUpload", methods=['GET', 'POST'])
-def handleFileUpload():
-    if 'resume' not in request.files:
-        return redirect('/')
-
-    file = request.files['resume']
-    if not file:
-        return redirect('/')
-
-    filename = secure_filename(file.filename)
-
-    fp = tempfile.TemporaryFile()
-    ch = file.read()
-    fp.write(ch)
-    fp.seek(0)
-
-    mime_type = request.headers['Content-Type']
-    uploadToDrive.insert_file(filename, mime_type, fp)
-
-    return redirect(url_for('summary_page'))
-
-    # if 'resume' in request.files:
-    #     resume = request.files['resume']
-    #     if resume.filename != '':
-    #         print(resume.content)
-    #         uploadToDrive.insert_file(resume, "Resumes")
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return render_template('create-skills.html', title="Create Skills")
