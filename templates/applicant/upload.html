@@ -8,13 +8,13 @@
             <h5>Job Description</h5>
             <p id="summary-desc" style="white-space: pre-line">{{jobs[0].Job_Description}}</p>
             <h5>Skills</h5>
-            <p id="summary-skills"></p>
+            <p id="summary-skills">{{skills}}</p>
 
 
             <form action="{{ url_for('applicant.apply', job_id=jobs[0].ID) }}" method="post" enctype="multipart/form-data">
                   Choose the file: <input type="file" name="resume" required="1"/>
-                  <input type="button" value="Upload" />
-
+                  <input class="btn btn-primary" type="button" value="Upload" />
+                  <br><br>
             <button class="btn btn-primary" type="button" id="summary-prev">Prev</button>
             <button class="btn btn-primary" type="submit">Submit</button>
             

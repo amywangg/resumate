@@ -23,3 +23,10 @@ def text_rank(job):
             matches.append(word)
 
     return matches
+
+def match_skills(app_skills, job_skills):
+    matches = []
+    for word in job_skills:
+        if any(word.lower() in s.lower() for s in app_skills):
+            matches.append(word)
+    return matches

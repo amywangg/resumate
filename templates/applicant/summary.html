@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{%extends "applicant/applicant.html"%}
+{%block content%}
 
-</body>
-</html>
+<div class="container flex-grow-1 flex-shrink-0 py-5">
+      <div id="summary-page">
+            <h5>Job Title</h5>
+            <p id="summary-title">{{jobs[0].Job_Title}}</p>
+            <h5>Job Description</h5>
+            <p id="summary-desc" style="white-space: pre-line">{{jobs[0].Job_Description}}</p>
+            <h5>Skills</h5>
+            <p id="summary-skills">{{skills}}</p>
+
+
+            <form action="{{ url_for('applicant.apply', job_id=jobs[0].ID) }}" method="post" enctype="multipart/form-data">
+                  Choose the file: <input type="file" name="resume" required="1"/>
+                  <input class="btn btn-primary" type="button" value="Upload" />
+                  <br><br>
+            <button class="btn btn-primary" type="button" id="summary-prev">Prev</button>
+            <button class="btn btn-primary" type="submit">Confirm</button>
+            
+            </form>
+
+
+      </div>
+
+
+</div>
+
+
+
+{% endblock content%}
