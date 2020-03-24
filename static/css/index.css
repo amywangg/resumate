@@ -180,4 +180,12 @@ a.article:hover {
     }
 }
 
-
+.active-step{
+    background-color: cornflowerblue;
+}
+.active-step-text{
+    color: cornflowerblue;
+}
+#ranktable_wrapper{
+    width: 100%;
+}

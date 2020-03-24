@@ -9,16 +9,20 @@
     <!--Stylesheet Links-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!--Custom CSS-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/create-job.css') }}" /> -->
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <!--Stepper-->
     <link rel="stylesheet" href="https://unpkg.com/bs-stepper/dist/css/bs-stepper.min.css">
-    jQuery Tag CSS
+    <!-- jQuery Tag CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/tagify.css') }}">
+    <!-- datatables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <!-- CSS for autocomplete search -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
 
     {% if title %}
     <title>Resumate - {{title}}</title>
@@ -42,25 +46,24 @@
                     <a href="{{url_for('home_page')}}">Home</a>
                 </li>
                 <li>
-                    <a href="{{url_for('jobs_page')}}">Jobs</a>
+                    <a href="{{url_for('job.jobs_page')}}">Jobs</a>
                 </li>
                 <li>
-                    <a href="#">Skills</a>
+                    <a href="{{url_for('rankings_page')}}">Rankings</a>
                 </li>
-                <li>
-                    <a href="#">Rankings</a>
-                </li>
-                <li>
-                    <a href="#">Matches</a>
-                </li>
-            
             </ul>
 
             <ul class="list-unstyled CTAs">
                 <li>
-                    <a href="{{url_for('create_job')}}" class="download">Add New Job</a>
+                    <a href="{{url_for('job.create_job')}}" class="download">Add New Job</a>
+                </li>
+                <br>
+                <li>
+                    <a href="{{url_for('create_skill')}}" data-toggle="modal" data-target="#createskill" id="skillmodal"
+                        class="download">Create Skillset</a>
                 </li>
             </ul>
+
         </nav>
 
         <!-- Page Content  -->
@@ -74,6 +77,43 @@
                 </ul>
             </nav>
             {%block content%}{% endblock content%}
+            <!--MODAL FOR CREATE SKILLS-->
+            <div class="modal fade" id="createskill" tabindex="-1" role="dialog" aria-labelledby="createSkill"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createSkill">Create Skill:</h5>
+                            <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Cancel">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('create_skill') }}" method="post">
+
+                                <div class="form-group">
+                                    <label for="title">Skill Title</label>
+                                    <input type="text" class="form-control" name="skilltitle" placeholder='Skill Name'id="title" required="1">
+                                
+                       </div>
+                       <div class=" form-group">
+                                        <label for="description">Add Skills</label>
+                                        <input class="createskilltag" name='createskilltag' placeholder='Skills'
+                                            style="display: none;">
+                                        <small id="skilldesc" class="form-text text-muted">Create a Skillset</small>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="close2" type="button" class="btn btn-secondary close2"
+                                            data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -87,18 +127,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
+    <!-- datatables -->
+    <script  type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <!-- jQuery Custom Scroller CDN -->
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
+    <!-- For autocomplete search -->
+    <script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <!--jQuery Tag input-->
     <script type="text/javascript" src="{{ url_for('static', filename='assets/tagify.min.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/job.js') }}"></script> -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
-
-  
-
-
 </body>
 
 </html>

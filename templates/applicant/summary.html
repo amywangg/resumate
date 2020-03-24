@@ -2,28 +2,28 @@
 {%block content%}
 
 <div class="container flex-grow-1 flex-shrink-0 py-5">
-      <div id="summary-page">
-            <h5>Job Title</h5>
-            <p id="summary-title">{{jobs[0].Job_Title}}</p>
-            <h5>Job Description</h5>
-            <p id="summary-desc" style="white-space: pre-line">{{jobs[0].Job_Description}}</p>
-            <h5>Skills</h5>
-            <p id="summary-skills">{{skills}}</p>
-
-
-            <form action="{{ url_for('applicant.apply', job_id=jobs[0].ID) }}" method="post" enctype="multipart/form-data">
-                  Choose the file: <input type="file" name="resume" required="1"/>
-                  <input class="btn btn-primary" type="button" value="Upload" />
-                  <br><br>
+    <div id="summary-page">
+        <h5>Review</h5>
+        <p id="summary-title">Please Review and Fix any Errors!</p>
+        
+        <form action="{{ url_for('applicant.summary_page', app=app_id)}}" method="post">
+            <div class="form-group">
+                <label for="title">Full Name</label>
+                <input type="text" class="form-control" name="name" id="name" required="1" value="{{name}}">
+            </div>
+            <div class="form-group">
+                <label for="title">E-mail</label>
+                <input type="email" class="form-control" name="email" id="email" required="1" value="{{email}}">
+            </div>
+            <div class="form-group">
+                <label for="title">Phone Number</label>
+                <input ttype="tel" id="phone" name="phone" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" class="form-control" required="1" value="{{phone}}">
+            </div>
+            <br><br>
             <button class="btn btn-primary" type="button" id="summary-prev">Prev</button>
             <button class="btn btn-primary" type="submit">Confirm</button>
-            
-            </form>
-
-
-      </div>
-
-
+        </form>
+    </div>
 </div>
 
 

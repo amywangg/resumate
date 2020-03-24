@@ -41,7 +41,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ url_for('update_job', job_id=job.ID) }}" method="post">
+                        <!--PREPOPULATE TEXT FIELDS TO BE EDITED-->
+                        <form action="{{ url_for('job.update_job', job_id=job.ID) }}" method="post">
 
                             <div class="form-group">
                                 <label for="title">Job Title</label>
@@ -49,7 +50,6 @@
                                        value="{{job.Job_Title}}">
 
                             </div>
-                            <!--PREPOPULATE TEXT FIELDS TO BE EDITED-->
                             <div class="form-group">
                                 <label for="description">Job Description</label>
                                 <textarea class="form-control" rows="5" id="description" name="description" required="1"

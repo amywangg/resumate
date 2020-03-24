@@ -10,8 +10,8 @@
             <div class="bs-stepper-header" role="tablist" style="margin-bottom: 2em;">
                 <div class="step" data-target="#test-l-1">
                     <button type="button" class="step-trigger" role="tab" id="job-step" aria-controls="test-l-1">
-                        <span id="circ-1" class="bs-stepper-circle ">1</span>
-                        <span id="lab-1" class="bs-stepper-label ">Job Details</span>
+                        <span id="circ-1" class="bs-stepper-circle active-step">1</span>
+                        <span id="lab-1" class="bs-stepper-label active-step-text">Job Details</span>
                     </button>
                 </div>
                 <div id="line-1-2" class="bs-stepper-line"></div>
@@ -32,7 +32,7 @@
 
 
             <div>
-                <form id="job-form" action="{{ url_for('create_job') }}" method="post">
+                <form id="job-form" action="{{ url_for('job.create_job') }}" method="post">
                     <!-- JOB DETAILS -->
                     <div id="job-page">
                         <div class="form-group">

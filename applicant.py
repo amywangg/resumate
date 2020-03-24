@@ -28,7 +28,7 @@ def apply(job_id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM Job WHERE ID =(%s)",[job_id])
     data = cur.fetchall()
-    print(data[0]['Folder_ID'])
+    
     folder_id = data[0]['Folder_ID']
     cur.execute("SELECT Skills FROM Skills s INNER JOIN Job j ON s.ID = j.Skills_ID WHERE j.ID =(%s)",[job_id])
     job_skills = cur.fetchall()
@@ -53,60 +53,48 @@ def apply(job_id):
         phone = resumedata['mobile_number']
    
         skills = json.dumps(resumedata['skills'])
-        # upload file to drive
-        file_id = drive.uploadFile(resume, folder_id)
+      
  
         cur.execute("INSERT INTO Applicant (Name, Email, Phone_Number, Skills, Resume) VALUES (%s,%s,%s,%s,%s)",
         (name, email, phone, skills, file_id))
         app_id = cur.lastrowid
 
+          # upload file to drive
+        file_id = drive.uploadFile(resume, folder_id, name+'-'+app_id)
+
         # find applicant and job matching skills
-        matched_skills = parseSkills.match_skills(resumedata['skills'], job_skills)
+        matched_skills = parse.match_skills(resumedata['skills'], job_skills)
         score = len(matched_skills)
         matched_skills = json.dumps(matched_skills)
         cur.execute("INSERT INTO Rankings (Applicant_ID, Job_ID, Score, Matched_Skills) VALUES (%s,%s,%s,%s)",
                 (app_id, job_id, score, matched_skills))
 
         mysql.connection.commit()
+        return redirect(url_for('applicant.summary_page', name = name, email = email, phone = phone, app = app_id))
 
     return render_template('applicant/upload.html', title="Apply", jobs=data, skills = skilltext)
 
 
 
-@applicant.route('/summary')
-def summary_page():
+@applicant.route('/summary/<string:app>', methods=['GET','POST'])
+def summary_page(app):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Applicant WHERE ID =(%s)",[app])
+    data = cur.fetchall()
+    name = data[0]['Name']
+    email = data[0]['Email']
+    phone = data[0]['Phone_Number']
 
-    return render_template('applicant/applicant.html', title="Applicant")
+    if request.method == 'POST':
+        cname = request.form['name']
+        cemail = request.form['email']
+        cphone = request.form['phone']
 
 
-
-
-
-# TODO: Implement file upload on applicant side
-# @app.route('/upload/<path:filename>', methods=['GET', 'POST'])
-# def download(filename):
-#     upload = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
-#     return send_from_directory(directory=uploads, filename=filename)
-
-# if 'resume' not in request.files:
-#     return redirect('/')
-#
-# file = request.files['resume']
-# if not file:
-#     return redirect('/')
-#
-# filename = secure_filename(file.filename)
-#
-# fp = tempfile.TemporaryFile()
-# ch = file.read()
-# fp.write(ch)
-# fp.seek(0)
-#
-# mime_type = request.headers['Content-Type']
-# uploadToDrive.insert_file(filename, mime_type, fp)
-
-    return redirect(url_for('summary_page'))
-
-# if 'resume' in request.files:
-#     resume = request.files['resume']
-
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE Applicant SET Name = (%s), Email=(%s), Phone_Number=(%s)"
+                        "WHERE Applicant.ID = (%s)",
+                        (cname,cemail, cphone, app))
+        mysql.connection.commit()
+        return redirect(url_for('applicant.applicant_page'))
+    return render_template('applicant/summary.html', title='Applicant', name = name, email=email, phone = phone, app_id = app)
