@@ -2,78 +2,134 @@
 {%block content%}
 
 <div class="my-3 p-3 bg-white rounded shadow-sm">
-    <h6 class="border-bottom border-gray pb-2 mb-0">All Jobs</h6>
+    <h4 class="border-bottom border-gray pb-2 mb-0">All Jobs</h4>
+    <br>
+    <table id="jobtable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Job Title</th>
+                <th>Job Skills</th>
+                <th># of Applicants</th>
+                <th>Status</th>
+                <th>Functions</th>
+            </tr>
+        </thead>
+        <tbody id="jobbody">
+            {% for job in jobs %}
+            <tr>
+                <td>{{job.Job_Title}}</td>
+                <td>{{job.Skills}}
+                </td>
+                <td>{{job.Count}}</td>
+                <td>
+                    {{job.Job_Status}}
+                </td>
+                <td style="width:250px;">
+                    <button  id="editskill" class="btn btn-info btn-xs"
+                        data-toggle="modal" value="{{job.Skills_ID}}" data-target="#editskill{{job.Skills_ID}}">Edit
+                        Skills</button>
+                    <a href="/job/update/{{job.ID}}" class="btn btn-warning btn-xs" data-toggle="modal"
+                        data-target="#modaledit{{job.ID}}">Edit</a>
+                    <a href="/job/delete/{{job.ID}}" class="btn btn-danger btn-xs"
+                        onclick="return confirm('Deleting this Job will remove Matches and Rankings, are you sure?')">Delete</a>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+<div class="media text-muted pt-3">
     {% for job in jobs %}
-    <div class="media text-muted pt-3">
-        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"
-             preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>
-            Placeholder</title>
-
-            <!--Set color of Job based on status-->
-            <rect width="100%" height="100%"
-                  {% if job.Job_Status=='open': %}
-                  fill="green"
-                  {% elif job.Job_Status=='filled': %}
-                  fill="tomato"
-                  {% endif %}
-            >
-            </rect>
-        </svg>
-        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark">{{job.Job_Title}}</strong>
-            {{job.Job_Description[0:300]}}
-        </p>
-        <a href="/job/update/{{job.ID}}" class="btn btn-warning btn-xs" data-toggle="modal"
-           data-target="#modaledit{{job.ID}}">Edit</a>
-        <a href="/job/delete/{{job.ID}}" class="btn btn-danger btn-xs"
-           onclick="return confirm('Deleting this Job will remove Matches and Rankings, are you sure?')">Delete</a>
-
-
-        <!--MODAL FOR EDIT-->
-        <div class="modal fade" id="modaledit{{job.ID}}" tabindex="-1" role="dialog" aria-labelledby="editJob"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editJob">Edit Job: </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!--PREPOPULATE TEXT FIELDS TO BE EDITED-->
-                        <form action="{{ url_for('job.update_job', job_id=job.ID) }}" method="post">
-
-                            <div class="form-group">
-                                <label for="title">Job Title</label>
-                                <input type="text" class="form-control" name="title" id="title" required="1"
-                                       value="{{job.Job_Title}}">
-
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Job Description</label>
-                                <textarea class="form-control" rows="5" id="description" name="description" required="1"
-                                          aria-describedby="jobdesc">{{job.Job_Description}}</textarea>
-                                <small id="jobdesc" class="form-text text-muted">Edit Job Title and Description
-                                </small>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-
-                        </form>
-                    </div>
-
+    <!--MODAL FOR EDIT-->
+    <div class="modal fade" id="modaledit{{job.ID}}" tabindex="-1" role="dialog" aria-labelledby="editJob"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editJob">Edit Job: </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                <div class="modal-body">
+                    <!--PREPOPULATE TEXT FIELDS TO BE EDITED-->
+                    <form action="{{ url_for('job.update_job', job_id=job.ID) }}" method="post">
+
+                        <div class="form-group">
+                            <label for="title">Job Title</label>
+                            <input type="text" class="form-control" name="title" id="title" required="1"
+                                value="{{job.Job_Title}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Job Status</label>
+                            <select name="status" class="js-example-basic-single js-states form-control statuschange"
+                                id="id_label_single" style="width: 100%;">
+                                <option value="" disabled selected>{{job.Job_Status}}</option>
+                                <option value="open">open</option>
+                                <option value="closed">closed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Job Description</label>
+                            <textarea class="form-control" rows="5" id="description" name="description" required="1"
+                                aria-describedby="jobdesc">{{job.Job_Description}}</textarea>
+                            <small id="jobdesc" class="form-text text-muted">Edit Job Title and Description
+                            </small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
-        <div id="" class="modal fade" role="dialog">
-
-        </div>
-
     </div>
-    {% endfor %}
+    <!--MODAL FOR EDIT SKILLS-->
+    <div class="modal fade" id="editskill{{job.Skills_ID}}" tabindex="-1" role="dialog" aria-labelledby="editskill"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createSkill">Update Skills:</h5>
+                    <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Cancel">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('job.update_skill', skill_id = job.Skills_ID) }}" method="post">
+
+                        <div class="form-group">
+                            <label for="title{{job.Skills_ID}}">Skill Title</label>
+                            <input value="{{job.Title}}" type="text" class="form-control" name="skilltitle{{job.Skills_ID}}"
+                                placeholder='Skill Name' id="title" required="1">
+
+                        </div>
+                        <div class=" form-group">
+                            <label for="editskilltag">Edit Skills</label>
+                            <input class="editskilltag{{job.Skills_ID}}" name='editskilltag{{job.Skills_ID}}' placeholder='Skills' style="display: none;">
+                        </div>
+                        <div class="modal-footer">
+                            <button id="close2" type="button" class="btn btn-secondary close2"
+                                data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+</div>
+
 </div>
 
 

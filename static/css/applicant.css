@@ -1,6 +1,9 @@
 .applicant{
 width: 100%
 }
+.active, .btn:hover{
+  color: black;
+}
 
 .box__dragndrop,
 .box__uploading,

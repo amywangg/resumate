@@ -40,15 +40,15 @@
                 <h3>Resumate</h3>
             </div>
 
-            <ul class="list-unstyled components">
+            <ul class="navlist list-unstyled components">
                 <p>Welcome to Resumate!</p>
-                <li>
+                <li class="homenav">
                     <a href="{{url_for('home_page')}}">Home</a>
                 </li>
-                <li>
+                <li class="jobnav">
                     <a href="{{url_for('job.jobs_page')}}">Jobs</a>
                 </li>
-                <li>
+                <li class="ranknav">
                     <a href="{{url_for('rankings_page')}}">Rankings</a>
                 </li>
             </ul>
@@ -57,63 +57,13 @@
                 <li>
                     <a href="{{url_for('job.create_job')}}" class="download">Add New Job</a>
                 </li>
-                <br>
-                <li>
-                    <a href="{{url_for('create_skill')}}" data-toggle="modal" data-target="#createskill" id="skillmodal"
-                        class="download">Create Skillset</a>
-                </li>
             </ul>
 
         </nav>
 
         <!-- Page Content  -->
         <div id="content">
-
-            <nav class="navbar navbar-expand-sm navbar-light bg-light">
-                <ul class="nav navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">{{title}}</a>
-                    </li>
-                </ul>
-            </nav>
             {%block content%}{% endblock content%}
-            <!--MODAL FOR CREATE SKILLS-->
-            <div class="modal fade" id="createskill" tabindex="-1" role="dialog" aria-labelledby="createSkill"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="createSkill">Create Skill:</h5>
-                            <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Cancel">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ url_for('create_skill') }}" method="post">
-
-                                <div class="form-group">
-                                    <label for="title">Skill Title</label>
-                                    <input type="text" class="form-control" name="skilltitle" placeholder='Skill Name'id="title" required="1">
-                                
-                       </div>
-                       <div class=" form-group">
-                                        <label for="description">Add Skills</label>
-                                        <input class="createskilltag" name='createskilltag' placeholder='Skills'
-                                            style="display: none;">
-                                        <small id="skilldesc" class="form-text text-muted">Create a Skillset</small>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="close2" type="button" class="btn btn-secondary close2"
-                                            data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -134,10 +84,14 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- For autocomplete search -->
     <script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <!-- CHART JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <!--jQuery Tag input-->
     <script type="text/javascript" src="{{ url_for('static', filename='assets/tagify.min.js') }}"></script>
-    <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/job.js') }}"></script> -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/job.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/rankings.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/charts.js') }}"></script>
 </body>
 
 </html>

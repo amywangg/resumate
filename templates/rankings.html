@@ -1,6 +1,5 @@
 {%extends "layout.html"%}
 {%block content%}
-
 <div style="width: 100%;">
     <label for="id_label_single" style="width: 100%;">
         Search Jobs:
@@ -10,15 +9,15 @@
             {% endfor %}
         </select>
     </label>
-    <button class="btn btn-primary" type="submit" id="get-rankings" style="width:100%">
+    <button class="btn btn-primary" type="submit" id="get-rankings" style="width:100%; height:40px;">
         Get Rankings
     </button>
 </div>
 
 
-
+<br>
 <div class="my-3 p-3 bg-white rounded shadow-sm" style="height: 100%;">
-    <h6 class="border-bottom border-gray pb-2 mb-0">View Rankings</h6>
+    <h4 class="border-bottom border-gray pb-2 mb-0">View Rankings</h4>
 
     <div class="content rankplaceholder" style="text-align: center; padding-top: 5vh;">
         <h5>Please Search for a Job</h5>
@@ -40,48 +39,7 @@
 
             
             </tbody>
-        </table>
-
-        <!--MODAL FOR EDIT-->
-        <div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="editJob"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editJob">Edit Job: </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!--PREPOPULATE TEXT FIELDS TO BE EDITED-->
-                        <form action="" method="post">
-
-                            <div class="form-group">
-                                <label for="title">Job Title</label>
-                                <input type="text" class="form-control" name="title" id="title" required="1"
-                                    value="">
-
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Job Description</label>
-                                <textarea class="form-control" rows="5" id="description" name="description" required="1"
-                                    aria-describedby="jobdesc"></textarea>
-                                <small id="jobdesc" class="form-text text-muted">Edit Job Title and Description
-                                </small>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-   
+        </table>   
     </div>
 </div>
 

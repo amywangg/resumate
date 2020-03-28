@@ -1,4 +1,38 @@
 {%extends "layout.html"%}
 {%block content%}
-{% include "jobs-snippet.html" %}
+<h4>General</h4>
+<div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">Recent Matches</h6>
+    {% for x in match %}
+    <div class="media text-muted pt-3">
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">{{x.Name}}</strong>
+            {{x.Email}}
+        </p>
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">Job Title</strong>
+            {{x.Job_Title}}
+        </p>
+        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <strong class="d-block text-gray-dark">Matched Skills</strong>
+            {{x.Skills}}
+        </p>
+    </div>
+    {% endfor %}
+    <small class="d-block text-right mt-3">
+        <a href="/jobs">All Jobs</a>
+    </small>
+</div>
+
+<h4>Statistics</h4>
+<div style="display: inline-flex; width: 100%;">
+    <div class="my-3 p-3 bg-white rounded shadow-sm" style="width:47%;height: 55vh;margin-right:3%; margin-left: 1.5%;">
+        <canvas id="jobapplicants" height="100%"></canvas>
+    </div>
+    <div class="my-3 p-3 bg-white rounded shadow-sm" style="width:47%;height: 55vh;">
+        <canvas id="skillstat" height="100%"></canvas>
+    </div>
+</div>
+
+
 {% endblock content%}

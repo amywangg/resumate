@@ -1,84 +1,33 @@
 {%extends "applicant/applicant.html"%}
 {%block content%}
-
 <div class="my-3 p-3 bg-white rounded shadow-sm">
-    <h6 class="border-bottom border-gray pb-2 mb-0">All Jobs</h6>
-    {% for job in jobs %}
-        {% if job.Job_Status=='open': %}
-    <div class="media text-muted pt-3">
-        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"
-             preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>
-            Placeholder</title>
-
-            <!--Set color of Job based on status-->
-            <rect width="100%" height="100%"
-                  {% if job.Job_Status=='open': %}
-                  fill="green"
-                  {% elif job.Job_Status=='filled': %}
-                  fill="tomato"
-                  {% endif %}
-            >
-            </rect>
-        </svg>
-        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <strong class="d-block text-gray-dark">{{job.Job_Title}}</strong>
-            {{job.Job_Description[0:300]}}
-        </p>
-        <a href="/applicant/{{job.ID}}" class="btn btn-primary btn-xs">Apply</a>
-        {% endif %}
-           <!-- <a href="/apply/{{job.ID}}" class="btn btn-primary btn-xs" data-toggle="modal"
-           data-target="#modaledit{{job.ID}}">Apply</a> -->
-        <!-- <a href="/apply/{{job.ID}}" class="btn btn-danger btn-xs"
-           onclick="return confirm('Deleting this Job will remove Matches and Rankings, are you sure?')">Apply</a> -->
-
-
-        <!--MODAL FOR EDIT-->
-        <div class="modal fade" id="modaledit{{job.ID}}" tabindex="-1" role="dialog" aria-labelledby="editJob"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editJob">Edit Job: </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ url_for('update_job', job_id=job.ID) }}" method="post">
-
-                            <div class="form-group">
-                                <label for="title">Job Title</label>
-                                <input type="text" class="form-control" name="title" id="title" required="1"
-                                       value="{{job.Job_Title}}">
-
-                            </div>
-                            <!--PREPOPULATE TEXT FIELDS TO BE EDITED-->
-                            <div class="form-group">
-                                <label for="description">Job Description</label>
-                                <textarea class="form-control" rows="5" id="description" name="description" required="1"
-                                          aria-describedby="jobdesc">{{job.Job_Description}}</textarea>
-                                <small id="jobdesc" class="form-text text-muted">Edit Job Title and Description
-                                </small>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div id="" class="modal fade" role="dialog">
-
-        </div>
-
-    </div>
-    {% endfor %}
+    <h4 class="border-bottom border-gray pb-2 mb-0">All Jobs</h4>
+    <br>
+    <table id="jobtable" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Job Title</th>
+                <th>Job Description</th>
+                <th># of Applicants</th>
+                <th>Functions</th>
+            </tr>
+        </thead>
+        <tbody id="jobbody">
+            {% for job in jobs %}
+            {% if job.Job_Status!='closed': %}
+            <tr>
+                <td>{{job.Job_Title}}</td>
+                <td>{{job.Job_Description[0:300]}}...</td>
+                <td>{{job.Count}}</td>
+                <td>
+                    <a href="/applicant/{{job.ID}}" class="btn btn-primary btn-xs" id="apply">Apply</a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
-
 
 
 {% endblock content%}
