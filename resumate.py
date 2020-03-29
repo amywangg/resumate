@@ -69,7 +69,6 @@ def home_page():
         data['Skills']= data['Skills'].replace('"','')
         match.append(data)
 
-    print(match)
     return render_template('home.html', title="Home", match = match)
 
 

@@ -108,7 +108,7 @@ def update_skill(skill_id):
         mysql.connection.commit()
         return redirect(url_for('job.jobs_page'))
 
-# AJAX: GET SKILLS FROM JOB DESC
+# AJAX: GET SKILLS FROM DB
 @job.route('/popskills')
 def pop_skills():
     a = request.args.get('a', 0, type=str)
